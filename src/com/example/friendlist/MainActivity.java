@@ -1,12 +1,22 @@
 package com.example.friendlist;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import com.android.volley.Request.Method;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
 import com.facebook.android.Facebook.DialogListener;
 import com.facebook.android.FacebookError;
 import com.navdrawer.SimpleSideDrawer;
 import android.os.Bundle;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
@@ -19,6 +29,7 @@ public class MainActivity extends Activity {
 	 @SuppressWarnings("deprecation")
 	Facebook facebook = new Facebook("755345174478792");
 	SimpleSideDrawer sideMenu;
+	RequestQueue rQueue;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +49,29 @@ public class MainActivity extends Activity {
             	sideMenu.toggleRightDrawer();
             }
         });
+
+		String url = "http://10.0.2.2:3000/api/getgroups?user_id=1";
+		rQueue = Volley.newRequestQueue(this);
+		 JsonArrayRequest request = new  JsonArrayRequest(url,
+				new Listener<JSONArray>(){
+					@Override
+					public void onResponse(JSONArray result) {
+						// TODO Auto-generated method stub
+						Log.e("成功", result.toString());
+						
+					}
+				}, 
+				new Response.ErrorListener() {
+		
+					@Override
+					public void onErrorResponse(VolleyError result) {
+						// TODO Auto-generated method stub
+						Log.e("失敗", result.toString());
+						
+					}
+				});
+		rQueue.add(request);
+
 
 	}
 
