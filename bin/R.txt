@@ -72,7 +72,7 @@ int drawable com_facebook_top_background 0x7f02001d
 int drawable com_facebook_top_button 0x7f02001e
 int drawable com_facebook_usersettingsfragment_background_gradient 0x7f02001f
 int drawable ic_launcher 0x7f020020
-int id action_settings 0x7f05001a
+int id action_settings 0x7f05001c
 int id com_facebook_login_activity_progress_bar 0x7f050006
 int id com_facebook_picker_activity_circle 0x7f050005
 int id com_facebook_picker_checkbox 0x7f050008
@@ -94,11 +94,13 @@ int id com_facebook_usersettingsfragment_login_button 0x7f050018
 int id com_facebook_usersettingsfragment_logo_image 0x7f050016
 int id com_facebook_usersettingsfragment_profile_name 0x7f050017
 int id large 0x7f050002
+int id lblListHeader 0x7f050019
+int id lblListItem 0x7f05001a
+int id lvExp 0x7f05001b
 int id normal 0x7f050001
 int id picker_subtitle 0x7f050013
 int id side_menu 0x7f050003
 int id small 0x7f050000
-int id textView1 0x7f050019
 int layout activity_main 0x7f030000
 int layout com_facebook_friendpickerfragment 0x7f030001
 int layout com_facebook_login_activity_layout 0x7f030002
@@ -114,7 +116,9 @@ int layout com_facebook_placepickerfragment 0x7f03000b
 int layout com_facebook_placepickerfragment_list_row 0x7f03000c
 int layout com_facebook_search_bar_layout 0x7f03000d
 int layout com_facebook_usersettingsfragment 0x7f03000e
-int layout side_menu 0x7f03000f
+int layout list_group 0x7f03000f
+int layout list_item 0x7f030010
+int layout side_menu 0x7f030011
 int menu main 0x7f0a0000
 int raw icon_menu 0x7f040000
 int string action_settings 0x7f08001a

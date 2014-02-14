@@ -1,11 +1,14 @@
 package com.example.friendlist;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.json.JSONArray;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -19,10 +22,10 @@ import com.navdrawer.SimpleSideDrawer;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.ExpandableListView;
 
 public class MainActivity extends Activity {
 	
@@ -30,6 +33,11 @@ public class MainActivity extends Activity {
 	Facebook facebook = new Facebook("755345174478792");
 	SimpleSideDrawer sideMenu;
 	RequestQueue rQueue;
+	ExpandableListAdapter listAdapter;
+	ExpandableListView expListView;
+	List<String>listDataHeader;
+	HashMap<String, List<String>> listDataChild;
+
 	String url = "http://192.168.56.1:3000/api/getgroups?user_id=1"; //samole URL
 	String loginurl = "http://192.168.56.1:3000/login/test?token="; //Login URL
 
@@ -39,9 +47,30 @@ public class MainActivity extends Activity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.activity_main);
 		
-		
+		//FBToken取得
 		Facebook();
+		//SlideMenu設定
+		slideMenu();
+        
+        //volleyのインスタンス生成とRequestの設定
+		rQueue = Volley.newRequestQueue(this);
+		SampleAPI();
 		
+		//IDの指定は今回はじめに指定したView以外のXMLを使うのでこのような特別な指定をする必要がある
+		expListView = (ExpandableListView)sideMenu.getRightBehindView().findViewById(R.id.lvExp);
+		expListView.setGroupIndicator(null);
+		//Listデータの準備
+		prepareListData();
+		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		
+		//setting list adapter
+		expListView.setAdapter(listAdapter);
+
+	}
+
+
+	//Slide menu 設定
+	public void slideMenu() {		
 		//SideMenu関連
 		sideMenu = new SimpleSideDrawer(this);
 		sideMenu.setRightBehindContentView(R.layout.side_menu);		
@@ -51,17 +80,9 @@ public class MainActivity extends Activity {
             	sideMenu.toggleRightDrawer();
             }
         });
-
-		rQueue = Volley.newRequestQueue(this);
-		SampleAPI();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
+	
+	
 	//Facebook Token取得メソッド
 	@SuppressWarnings("deprecation")
 	public void Facebook() {
@@ -76,32 +97,61 @@ public class MainActivity extends Activity {
 			}
 			@Override
 			public void onFacebookError(FacebookError e) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub	
 			}
-
 			@Override
 			public void onError(DialogError e) {
-				// TODO Auto-generated method stub
-				
+				// TODO Auto-generated method stub		
 			}
-
 			@Override
 			public void onCancel() {
-				// TODO Auto-generated method stub
-				
-			}
-			
+				// TODO Auto-generated method stub	
+			}	
 		});
 	}
+	
+	//データの準備
+	private void prepareListData() {
+		// TODO Auto-generated method stub
+		listDataHeader = new ArrayList<String>();
+		listDataChild = new HashMap<String, List<String>>();
+		
+		//AddingChaildData
+		listDataHeader.add("Top 1");
+		listDataHeader.add("Top 2");
+		listDataHeader.add("Top 3");
+		
+		//List childData
+		List<String> top1 = new ArrayList<String>();
+		top1.add("child1");
+		top1.add("child2");
+		top1.add("child3");
+		
+		//List childData
+		List<String> top2 = new ArrayList<String>();
+		top2.add("child1");
+		top2.add("child2");
+		top2.add("child3");
+		
+		//List childData
+		List<String> top3 = new ArrayList<String>();
+		top3.add("child1");
+		top3.add("child2");
+		top3.add("child3");
+		
+		listDataChild.put(listDataHeader.get(0), top1);
+		listDataChild.put(listDataHeader.get(1), top2);
+		listDataChild.put(listDataHeader.get(2), top3);
+		
+	}
+
 	public void SampleAPI() {
 		JsonArrayRequest request = new  JsonArrayRequest(url,
 				new Listener<JSONArray>(){
 					@Override
 					public void onResponse(JSONArray result) {
 						// TODO Auto-generated method stub
-						Log.e("成功", result.toString());
-						
+						Log.e("成功", result.toString());			
 					}
 				}, 
 				new Response.ErrorListener() {
@@ -109,14 +159,12 @@ public class MainActivity extends Activity {
 					@Override
 					public void onErrorResponse(VolleyError result) {
 						// TODO Auto-generated method stub
-						Log.e("失敗", result.toString());
-						
+						Log.e("失敗", result.toString());				
 					}
 				});
 		rQueue.add(request);		
 	}
 	public void loginRequest() {
-		
 		Log.e("LoginRequest", "呼ばれたよ！");
 		StringRequest stringRequest = new StringRequest(Method.GET, loginurl,
 				new Listener<String>(){
@@ -130,8 +178,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onErrorResponse(VolleyError result) {
 				// TODO Auto-generated method stub
-				Log.e("失敗", result.toString());
-				
+				Log.e("失敗", result.toString());			
 			}
 		});
 		rQueue.add(stringRequest);		
