@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -28,6 +29,8 @@ import android.view.Window;
 import android.widget.ExpandableListView;
 
 public class MainActivity extends Activity {
+	
+	JSONArray group_list;
 	
 	 @SuppressWarnings("deprecation")
 	Facebook facebook = new Facebook("755345174478792");
@@ -59,12 +62,6 @@ public class MainActivity extends Activity {
 		//IDの指定は今回はじめに指定したView以外のXMLを使うのでこのような特別な指定をする必要がある
 		expListView = (ExpandableListView)sideMenu.getRightBehindView().findViewById(R.id.lvExp);
 		expListView.setGroupIndicator(null);
-		//Listデータの準備
-		prepareListData();
-		listAdapter = new ExpandableListAdapter(this, listDataHeader, listDataChild);
-		
-		//setting list adapter
-		expListView.setAdapter(listAdapter);
 
 	}
 
@@ -117,15 +114,24 @@ public class MainActivity extends Activity {
 		listDataChild = new HashMap<String, List<String>>();
 		
 		//AddingChaildData
-		listDataHeader.add("Top 1");
-		listDataHeader.add("Top 2");
-		listDataHeader.add("Top 3");
+		listDataHeader.add("Groups");
+		listDataHeader.add("Events");
+		listDataHeader.add("Companies");
+		listDataHeader.add("Schools");
 		
 		//List childData
 		List<String> top1 = new ArrayList<String>();
 		top1.add("child1");
 		top1.add("child2");
 		top1.add("child3");
+		for (int i = 0; i < group_list.length(); i++) {
+			try {
+				top1.add(group_list.getJSONObject(i).getString("name"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		//List childData
 		List<String> top2 = new ArrayList<String>();
@@ -145,13 +151,28 @@ public class MainActivity extends Activity {
 		
 	}
 
+	private JSONArray group_list(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	public void SampleAPI() {
 		JsonArrayRequest request = new  JsonArrayRequest(url,
 				new Listener<JSONArray>(){
 					@Override
 					public void onResponse(JSONArray result) {
 						// TODO Auto-generated method stub
-						Log.e("成功", result.toString());			
+						Log.e("成功", result.toString());
+						group_list = result;
+						//Listデータの準備
+						prepareListData();
+						listAdapter = new ExpandableListAdapter(MainActivity.this, listDataHeader, listDataChild);
+						
+						//setting list adapter
+						expListView.setAdapter(listAdapter);
+
+						
 					}
 				}, 
 				new Response.ErrorListener() {

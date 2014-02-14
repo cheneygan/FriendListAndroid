@@ -2,7 +2,6 @@ package com.example.friendlist;
 
 import java.util.HashMap;
 import java.util.List;
- 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
@@ -40,7 +39,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             boolean isLastChild, View convertView, ViewGroup parent) {
  
         final String childText = (String) getChild(groupPosition, childPosition);
- 
+        
+        //Viewの生成は出来るだけ繰り返さない
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item, null);
@@ -77,6 +77,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
+        //Viewの生成は出来るだけ繰り返さない
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
