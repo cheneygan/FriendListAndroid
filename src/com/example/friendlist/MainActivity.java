@@ -1,5 +1,6 @@
 package com.example.friendlist;
 
+import java.io.PushbackInputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +118,7 @@ public class MainActivity extends Activity {
 		listDataHeader.add("Groups");
 		listDataHeader.add("Events");
 		listDataHeader.add("Companies");
-		listDataHeader.add("Schools");
+		//listDataHeader.add("Schools");
 		
 		//List childData
 		List<String> top1 = new ArrayList<String>();
@@ -202,6 +203,6 @@ public class MainActivity extends Activity {
 				Log.e("失敗", result.toString());			
 			}
 		});
-		rQueue.add(stringRequest);		
+		rQueue.add(stringRequest);
 	}
 }
